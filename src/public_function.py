@@ -106,6 +106,14 @@ def extract_jp(get_scenario_from_origin, encoding):
     with open('intermediate_file/jp_all.txt', 'w', encoding='utf8') as f:
         for line in jp:
             f.write(line)
+        if os.path.exists('intermediate_file/jp_chs.json'):
+            jp_chs = open_json('intermediate_file/jp_chs.json')
+        else:
+            jp_chs = dict()
+        for i in jp:
+            if i not in jp_chs:
+                jp_chs[i] = ''
+        save_json('intermediate_file/jp_chs.json', jp_chs)
 
 
 def get_untranslated():
@@ -1009,6 +1017,14 @@ class XFL():
                     jp_all.append(_stack)
 
         save_file('intermediate_file/jp_all.txt', '\n'.join(jp_all))
+        if os.path.exists('intermediate_file/jp_chs.json'):
+            jp_chs = open_json('intermediate_file/jp_chs.json')
+        else:
+            jp_chs = dict()
+        for i in jp_all:
+            if i not in jp_chs:
+                jp_chs[i] = ''
+        save_json('intermediate_file/jp_chs.json', jp_chs)
 
     def output(path='input', dict='intermediate_file/jp_chs.json'):
         file_all = os.listdir(path)
@@ -1305,6 +1321,14 @@ class LIVEMAKER():
                 _p += 1
             print(f, '\t', _cnt)
         save_file('intermediate_file/jp_all.txt', '\n'.join(ans+buttons))
+        if os.path.exists('intermediate_file/jp_chs.json'):
+            jp_chs = open_json('intermediate_file/jp_chs.json')
+        else:
+            jp_chs = dict()
+        for i in ans:
+            if i not in jp_chs:
+                jp_chs[i] = ''
+        save_json('intermediate_file/jp_chs.json', jp_chs)
 
     def _text_to_cmds(text:str, version:int, speed:bytes) -> list:
         res = []
@@ -2147,7 +2171,14 @@ class YU_RIS():
             for line in jp_all:
                 f.write(line+'\n')
         #         jp_chs[line] = ''
-
+        if os.path.exists('intermediate_file/jp_chs.json'):
+            jp_chs = open_json('intermediate_file/jp_chs.json')
+        else:
+            jp_chs = dict()
+        for i in jp_all:
+            if i not in jp_chs:
+                jp_chs[i] = ''
+        save_json('intermediate_file/jp_chs.json', jp_chs)
         # save_json('intermediate_file/jp_chs.json', jp_chs)
 
     # output
@@ -2254,6 +2285,14 @@ class PAC():
                 cnt += 1
             print(f, cnt, cnt2)
         save_file('intermediate_file/jp_all.txt', '\n'.join(ans))
+        if os.path.exists('intermediate_file/jp_chs.json'):
+            jp_chs = open_json('intermediate_file/jp_chs.json')
+        else:
+            jp_chs = dict()
+        for i in ans:
+            if i not in jp_chs:
+                jp_chs[i] = ''
+        save_json('intermediate_file/jp_chs.json', jp_chs)
 
     def output_srp():
         def _format(s: str):
@@ -2645,6 +2684,14 @@ class SILKY():
         for f in file_all:
             ans += open_file_b(f'silky_text/{f}').decode('cp932').splitlines()
         save_file('intermediate_file/jp_all.txt', '\n'.join(ans))
+        if os.path.exists('intermediate_file/jp_chs.json'):
+            jp_chs = open_json('intermediate_file/jp_chs.json')
+        else:
+            jp_chs = dict()
+        for i in ans:
+            if i not in jp_chs:
+                jp_chs[i] = ''
+        save_json('intermediate_file/jp_chs.json', jp_chs)
 
     def output():
 
@@ -2933,6 +2980,14 @@ class MED():
                         print(f, _buff)
                     _buff = b''
         save_file('intermediate_file/jp_all.txt', '\n'.join(ans))
+        if os.path.exists('intermediate_file/jp_chs.json'):
+            jp_chs = open_json('intermediate_file/jp_chs.json')
+        else:
+            jp_chs = dict()
+        for i in ans:
+            if i not in jp_chs:
+                jp_chs[i] = ''
+        save_json('intermediate_file/jp_chs.json', jp_chs)
 
     def fix_dict():
         '''
@@ -3294,7 +3349,7 @@ class MED():
                     return
                 data[pos:pos+_len] = t[3]
                 print('替换成功：', t)
-        save_file_b('new_'+path, data)
+            save_file_b('new_'+path, data)
 
 
 class ANIM():
@@ -3812,10 +3867,18 @@ class Lilim():
                     elif line.count('slctwnd'):
                         text_all.append(line.split('\"')[-2]+'\n')
                 cnt += 1
-            # END
+                return text_all
 
-            return text_all
+                #return text_all
+
+
         extract_jp(get_scenario_from_origin, 'cp932')
+        print('ok')
+
+        # END
+
+
+
 
     def fix_dict():
         '''
