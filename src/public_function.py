@@ -2246,6 +2246,8 @@ class PAC():
     カットしない
     一部物語をカットする
     '''
+    entry_offset_length = 4 #设定偏移所占字节长度
+
     def extract_srp():
         '''
         ,[os].+」\n -> \n
@@ -2394,16 +2396,16 @@ class PAC():
             index_offset += name_length
 
             _entry_offset = int.from_bytes(
-                data[index_offset:index_offset+8],
+                data[index_offset:index_offset+PAC.entry_offset_length],
                 byteorder='little'
             ) + data_offset
-
+            index_offset += PAC.entry_offset_length
+            
             _entry_size = int.from_bytes(
-                data[index_offset+8:index_offset+12],
+                data[index_offset:index_offset+4],
                 byteorder='little'
             )
-
-            index_offset += 12
+            index_offset += 4
 
             _entry_data = data[_entry_offset:_entry_offset+_entry_size]
             if decode:
@@ -2438,7 +2440,7 @@ class PAC():
         file_all = os.listdir(path)
         count = int.to_bytes(len(file_all), 2, byteorder='little')
         n_length = int.to_bytes(name_length, 1, byteorder='little')
-        index_offset = 7 + (name_length+12)*len(file_all)
+        index_offset = 7 + (name_length+PAC.entry_offset_length+4)*len(file_all)
         data_offset = int.to_bytes(index_offset, 4, byteorder='little')
         ans = count+n_length+data_offset
         entry_all = b''
@@ -2452,7 +2454,7 @@ class PAC():
 
             _entry_offset = int.to_bytes(
                 len(data_all),
-                8,
+                PAC.entry_offset_length,
                 byteorder='little'
             )
 
@@ -2584,6 +2586,7 @@ class NEKOSDK():
                     p+=12
                     ans.append(data[p:p+_len-9].decode('cp932'))
                     p+=_len - 8
+                    print(ans[-1])
                 p += 1
             # print(f, len(ans)-cnt)
         save_file('intermediate_file/jp_all.txt', '\n'.join(ans))
@@ -3150,12 +3153,13 @@ class MED():
             offset = from_bytes(entry[-4:])
             length = from_bytes(entry[-8:-4])
             unk = from_bytes(entry[-12:-8])
-            name = ''
+            nameBytes = bytearray()
             for i in entry:
                 if not i:
                     break
                 else:
-                    name += chr(i)
+                    nameBytes.append(i)
+            name = nameBytes.decode('cp932')
 
             _file_data = data[offset:offset+length]
             file_name = f'{name}_{unk}'
@@ -3218,7 +3222,7 @@ class MED():
             _p = len(f)-1
             while f[_p] != '_':
                 _p -= 1
-            name = f[:_p].encode()
+            name = f[:_p].encode('cp932')
             name += b'\x00'*(entry_length-len(name)-12)
             unk = int(f[_p+1:])
             unk = to_bytes(unk, 4)
@@ -3867,18 +3871,10 @@ class Lilim():
                     elif line.count('slctwnd'):
                         text_all.append(line.split('\"')[-2]+'\n')
                 cnt += 1
-                return text_all
+            # END
 
-                #return text_all
-
-
+            return text_all
         extract_jp(get_scenario_from_origin, 'cp932')
-        print('ok')
-
-        # END
-
-
-
 
     def fix_dict():
         '''

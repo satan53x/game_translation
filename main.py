@@ -1,8 +1,6 @@
 import sys
 from src.public_function import *
-from src.public_function2 import MED2
-def youxigongne():
-    a=int(input())
+def youxigongne(a):
     if a==1:
         print("请输入执行指令：\n1.解包\n 2.提取文本\n 3.导入文本\n 4.封包\n 5.汉化程序\n")
         b = int(input())
@@ -103,9 +101,9 @@ def youxigongne():
         print("请输入执行指令：\n 1.提取文本\n 2.导入文本\n " )
         b = int(input())
         if b==1:
-            Nsrc.pt.extract()
+            NScript.pt.extract()
         elif b==2:
-            Nsrc.pt.output()
+            NScript.pt.output()
     elif a == 12:
         print("请输入执行指令：\n 1.提取文本\n 2.导入文本\n  " )
         b = int(input())
@@ -113,35 +111,19 @@ def youxigongne():
             RPGMakerVX.extract()
         elif b==2:
             RPGMakerVX.output()
-    elif a==13:
-        print("请输入执行指令：\n1.解包\n 2.提取文本\n 3.导入文本\n 4.封包\n 5.汉化程序\n")
-        b = int(input())
-        if b==1:
-            MED2.unpack('md_scr.med')
-        elif b==2:
-            MED2.extract_med()
-        elif b==3:
-            MED2.output()
-        elif b==4:
-            MED2.repack('output')
-        elif b == 5:
-            print("请输入需要汉化的程序名字")
-            C = input()
-            MED2.fix_exe(C)
 
 
-if sys.argv[1] == '1':
-    print("请输入游戏引擎编号：\n 1.MED(DXLIb引擎) \n 2.ANIM\n 3.Lilim\n 4.PAC（TmrHiroAdvSystem）\n "
-          "5.RPM\n 6.NEKOSDK\n 7.SILKY\n 8.YU_RIS\n 9.XFL\n 10.LIVEMAKER\n "
-          "11.Nsrc\n 12.RPGMakerVX\n 13.MED2(DXLIb引擎)\n")
-    youxigongne()
+if True:
+#if sys.argv[1] == '1':
+    print("请输入游戏引擎编号：\n 1.MED \n 2.ANIM\n 3.Lilim\n 4.PAC\n 5.RPM\n 6.NEKOSDK\n 7.SILKY\n 8.YU_RIS\n 9.XFL\n 10.LIVEMAKER\n "
+          "11.Nsrc\n 12.RPGMakerVX\n")
+    engineCode=int(input())
+    youxigongne(engineCode)
     while 1:
-        print("是否继续：\n 1.是 \n ")
-        paoo =int(input())
-        if paoo ==1:
-            print(
-                "请请重新输入游戏引擎编号：\n 1.MED(DXLIb引擎) \n 2.ANIM\n 3.Lilim\n 4.PAC（TmrHiroAdvSystem）\n 5.RPM\n 6.NEKOSDK\n 7.SILKY\n 8.YU_RIS\n 9.XFL\n 10.LIVEMAKER\n "
-                "11.Nsrc\n 12.RPGMakerVX\n")
-            youxigongne()
-        else:
+        try:
+            youxigongne(engineCode)
+        except ValueError as ex:
+            break
+        except Exception as ex:
+            print(ex)
             break
