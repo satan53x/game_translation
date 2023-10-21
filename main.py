@@ -98,7 +98,7 @@ def youxigongne():
         elif b==2:
             LIVEMAKER.output(True)
         elif b==3:
-            LIVEMAKER.extract_exe('game.exe', False)
+            LIVEMAKER.extract_exe('game.exe', True)
     elif a == 11:
         print("请输入执行指令：\n 1.提取文本\n 2.导入文本\n " )
         b = int(input())
