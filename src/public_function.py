@@ -2246,7 +2246,7 @@ class PAC():
     カットしない
     一部物語をカットする
     '''
-    entry_offset_length = 4 #设定偏移所占字节长度
+    entry_offset_length = 8 #设定偏移所占字节长度
 
     def extract_srp():
         '''
