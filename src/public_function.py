@@ -9,6 +9,7 @@ import src.langconv as lc
 import matplotlib.pyplot as plt
 from struct import unpack
 from pdb import set_trace as int3
+from src.common import Env
 
 if os.path.exists('src/baidufanyi_my.py'):
     from src.baidufanyi_my import translate as baidu_t
@@ -363,6 +364,11 @@ def open_json(path):
 
 
 def save_json(path, data):
+    if Env.copyKeyToValue:
+        if isinstance(data, dict):
+            for key, value in data.items():
+                if not value:
+                    data[key] = key
     with open(path, 'w', encoding='utf8') as f:
         f.write(json.dumps(data, ensure_ascii=False, indent=4))
 
